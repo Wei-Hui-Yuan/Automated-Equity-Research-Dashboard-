@@ -32,6 +32,7 @@ To provide a more realistic valuation, this pipeline avoids the common mistake o
 ## 📊 Dashboard Visuals
 <img width="1266" height="722" alt="image" src="https://github.com/user-attachments/assets/19242558-001a-4f83-bdd9-a9328d1cec6e" />
 The pipeline generates structured data optimized for the following Power BI visuals:
+
 * **Intrinsic vs. Market PX (Scatter Plot):** Maps risk vs. reward; tickers below the diagonal line represent "under-priced" opportunities.
 * **Equity Valuation Upside (Bar Chart):** A ranked leaderboard of stocks by upside percentage, utilizing conditional formatting to highlight the margin of safety (e.g., strong buy vs overvalued).
 * **Key Performance Indicators (KPI Cards):** Real-time summary metrics for aggregate portfolio health, including **Avg Upside %** and **Total Intrinsic Value**.
