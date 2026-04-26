@@ -1,61 +1,47 @@
-📊 Interactive Visualization & Dashboarding
-The Power BI front-end transforms complex Python outputs into an "at-a-glance" executive dashboard.
+# Automated Equity Research & Valuation Dashboard
+### *An End-to-End Financial Engineering & Decision Support Suite*
 
-1. Visual Hierarchy & Insights
-Intrinsic vs. Market Price (Scatter Plot): This visual maps risk versus reward. Tickers above the diagonal "Fair Value" line represent potential overvaluations, while those below are identified as "under-priced" opportunities.
+## 📌 Project Overview
+This project automates the complex process of fundamental equity valuation. By bridging the gap between raw market data and actionable insights, it allows users to determine the **Intrinsic Value** of a company using an automated **Three-Stage Discounted Cash Flow (DCF)** model.
 
-Equity Valuation Upside (Bar Chart): Provides a ranked leaderboard of the most attractive investment opportunities based on the calculated margin of safety.
+The goal is to provide a "grounded" alternative to market price by calculating a stock's fair value based on future cash flows rather than short-term sentiment. This tool filters out market noise to highlight stocks trading at a significant margin of safety.
 
-Key Performance Indicators (KPI Cards): Display aggregate portfolio health, including average upside percentage and total market capitalization coverage.
+## ⚖️ Model Logic: Stage 1 vs. Stage 2 vs. Stage 3
+To provide a more realistic valuation, this pipeline avoids the common mistake of "growth cliffs" by implementing a transitionary fading logic.
 
-2. The Integrated Workflow (Excel + Power BI)
-The system is designed to be a "living model" where the user acts as the Chief Investment Officer:
+| Feature | Stage 1: High Growth | Stage 2: Linear Fade | Stage 3: Terminal Stability |
+| :--- | :--- | :--- | :--- |
+| **Timeframe** | Years 1 - 5 | Years 6 - 10 | Years 11 - 20+ |
+| **Growth Logic** | User-defined conviction ($G1$). | **Linear Step-Down** calculation. | Mature $G3$ capped at economic growth. |
+| **Market Context** | Peak competitive advantage. | Competitive convergence/saturation. | Long-term GDP alignment. |
+| **Valuation Aim** | Capture near-term alpha. | Smooth transition to maturity. | Sustainable perpetual value. |
 
-The "Control Center" (Excel): Users define their own conviction levels by adjusting G1-G3 growth rates in tickers_config.xlsx. This allows for instant "what-if" scenario analysis.
+## 🚀 Key Features
+* **Three-Stage Growth Logic:** Uses a custom Python algorithm to calculate an annual step-down in growth rates during Stage 2, simulating natural business maturation.
+* **Hybrid Terminal Value:** Average of two professional methodologies—**Gordon Growth** and **Exit Multiples** (capped at 15-20x)—to prevent over-sensitivity to terminal assumptions.
+* **Automated Data Pipeline:** Integration with `yfinance` to scrape real-time Operating Cash Flow, CapEx, Total Cash, and Total Debt.
+* **Dynamic WACC Calculation:** Automatically adjusts the discount rate based on a stock’s specific **Beta**, ensuring the valuation is risk-adjusted.
+* **Interactive "What-If" Analysis:** Built-in feedback loop where changes in the Excel "Control Center" instantly update the Power BI visuals upon refresh.
 
-The "Engine" (Python): Upon clicking Refresh in Power BI, the Python script triggers, pulling the new Excel assumptions and merging them with live market data from the Yahoo Finance API.
+## 🛠️ Tech Stack
+* **Language:** Python 3.x
+* **Libraries:** Pandas, yfinance, NumPy
+* **Visualization:** Power BI
+* **Configuration:** Microsoft Excel
 
-The "Front-End" (Power BI): The dashboard automatically re-calculates all DCF models and updates the charts, providing a real-time feedback loop between user assumptions and market reality.
+## 📊 Dashboard Visuals
+<img width="1266" height="722" alt="image" src="https://github.com/user-attachments/assets/19242558-001a-4f83-bdd9-a9328d1cec6e" />
+The pipeline generates structured data optimized for the following Power BI visuals:
+* **Intrinsic vs. Market PX (Scatter Plot):** Maps risk vs. reward; tickers below the diagonal line represent "under-priced" opportunities.
+* **Equity Valuation Upside (Bar Chart):** A ranked leaderboard of stocks by upside percentage, utilizing conditional formatting to highlight the margin of safety (e.g., strong buy vs overvalued).
+* **Key Performance Indicators (KPI Cards):** Real-time summary metrics for aggregate portfolio health, including **Avg Upside %** and **Total Intrinsic Value**.
+* **Ticker Slicer & Assumption Table:** Interactive components allowing for easy stock filtering and quick reference to user-defined growth rate inputs.
 
-📉 Valuation Methodology
-The core of this project is a Three-Stage Discounted Cash Flow (DCF) model that automates the transition from high-growth phases to terminal stability.
-
-1. Three-Stage Growth Logic
-To avoid "growth cliffs" and unrealistic valuations, the Python script implements three distinct phases:
-
-Stage 1 (Years 1-5): High-growth phase based on the user's specific G1 inputs.
-
-Stage 2 (Years 6-10): A Linear Fade transition. The model calculates the annual step-down required to move from the G1 rate to the G2 rate, simulating natural market saturation and competitive convergence.
-
-Stage 3 (Years 11-20): A mature growth phase based on the G3 input, capped to reflect long-term economic reality.
-
-2. Terminal Value Calculation
-To ensure a robust "Exit Value," the script calculates and averages two professional methods:
-
-Gordon Growth Model: Calculates value based on a perpetual growth rate (typically capped at 2% to align with long-term GDP growth).
-
-Exit Multiple Method: Applies a Price-to-Cash-Flow multiple (capped at 15x-20x for safety) to the final year's projected FCF.
-
-Averaging: By averaging these two methods, the model provides a more "grounded" intrinsic value that isn't overly sensitive to a single terminal assumption.
-
-3. Automated Data Pipeline
-Financials: Uses yfinance to scrape real-time Operating Cash Flow, CapEx, Total Cash, and Total Debt.
-
-WACC (Discount Rate): Dynamically calculates the discount rate based on the stock's Beta, adjusting the required return for the risk profile of the specific ticker.
-
-Net Debt Adjustment: Subtracts Net Debt (Total Debt - Cash) from the Enterprise Value to arrive at the Equity Value, ensuring the final share price reflects the company's actual balance sheet.
-
-🚀 How to Use This Dashboard
-Clone the Repo: Download the .pbix and tickers_config.xlsx files.
-
-Update Assumptions: Open the Excel file and change the G1, G2, or G3 growth rates for any ticker.
-
-Update File Path:
-
-Open the Power BI file.
-
-Go to Transform Data -> Source (Python Script).
-
-Change the file path variable to point to the location of the Excel file on your computer.
-
-Refresh: Click Refresh in Power BI. The Python engine will fetch new Yahoo Finance data, apply your Excel growth rates, and update the visuals.
+## ⚙️ Setup Instructions
+1.  **Clone the Repository:** Download the `.pbix` and `tickers_config.xlsx` files.
+2.  **Define Assumptions:** Open the Excel file and enter your $G1, G2,$ and $G3$ growth expectations for your target tickers.
+3.  **Configure Power BI Path:**
+    * Open the `.pbix` file.
+    * Navigate to **Transform Data > Source (Python Script)**.
+    * Update the file path variable to match the location of `tickers_config.xlsx` on your machine.
+4.  **Execute & Refresh:** Click **Refresh** in the Power BI ribbon. The Python engine will fetch live data, apply your fade logic, and update the interactive dashboard.
